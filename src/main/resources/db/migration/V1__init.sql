@@ -9,19 +9,7 @@ CREATE TABLE customer
     address    VARCHAR(255)          NULL,
     city       VARCHAR(255)          NULL,
     state      VARCHAR(255)          NULL,
-    country    VARCHAR(255)          NULL,
     CONSTRAINT pk_customer PRIMARY KEY (id)
-);
-
-CREATE TABLE `order`
-(
-    id           BIGINT AUTO_INCREMENT NOT NULL,
-    created_at   datetime              NULL,
-    updated_at   datetime              NULL,
-    customer_id  BIGINT                NULL,
-    order_number VARCHAR(255)          NULL,
-    order_status VARCHAR(255)          NULL,
-    CONSTRAINT pk_order PRIMARY KEY (id)
 );
 
 CREATE TABLE order_items
@@ -32,6 +20,17 @@ CREATE TABLE order_items
     order_id   BIGINT                NULL,
     price      DOUBLE                NOT NULL,
     CONSTRAINT pk_orderitems PRIMARY KEY (id)
+);
+
+CREATE TABLE orders
+(
+    id           BIGINT AUTO_INCREMENT NOT NULL,
+    created_at   datetime              NULL,
+    updated_at   datetime              NULL,
+    customer_id  BIGINT                NULL,
+    order_number VARCHAR(255)          NULL,
+    order_status VARCHAR(255)          NULL,
+    CONSTRAINT pk_orders PRIMARY KEY (id)
 );
 
 CREATE TABLE product
@@ -47,10 +46,10 @@ CREATE TABLE product
 );
 
 ALTER TABLE order_items
-    ADD CONSTRAINT FK_ORDERITEMS_ON_ORDER FOREIGN KEY (order_id) REFERENCES `order` (id);
+    ADD CONSTRAINT FK_ORDERITEMS_ON_ORDER FOREIGN KEY (order_id) REFERENCES orders (id);
 
 ALTER TABLE order_items
     ADD CONSTRAINT FK_ORDERITEMS_ON_PRODUCT FOREIGN KEY (product_id) REFERENCES product (id);
 
-ALTER TABLE `order`
-    ADD CONSTRAINT FK_ORDER_ON_CUSTOMER FOREIGN KEY (customer_id) REFERENCES customer (id);
+ALTER TABLE orders
+    ADD CONSTRAINT FK_ORDERS_ON_CUSTOMER FOREIGN KEY (customer_id) REFERENCES customer (id);
